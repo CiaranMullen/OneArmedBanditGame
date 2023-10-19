@@ -10,13 +10,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.size 
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -57,29 +53,11 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun OneArmedBanditApp() {
     DiceWithButtonAndImage(
-        modifier = Modifier
-            .fillMaxSize()
-            .wrapContentSize(Alignment.Center)
     )
 }
+
 @Composable
-inline fun Column(
-    modifier: Modifier = Modifier,
-    verticalArrangement: Arrangement.Vertical = Arrangement.Top,
-    horizontalAlignment: Alignment.Horizontal = Alignment.Start,
-    content: @Composable ColumnScope.() -> Unit
-) {
-}
-@Composable
-inline fun Row(
-    modifier: Modifier = Modifier,
-    horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
-    verticalAlignment: Alignment.Vertical = Alignment.Top,
-    content: @Composable RowScope.() -> Unit
-) {
-}
-@Composable
-fun DiceWithButtonAndImage(modifier: Modifier = Modifier) {
+fun DiceWithButtonAndImage() {
     var result1 by remember { mutableStateOf(1) }
     var result2 by remember { mutableStateOf(1) }
     var result3 by remember { mutableStateOf(1) }
@@ -107,43 +85,60 @@ fun DiceWithButtonAndImage(modifier: Modifier = Modifier) {
         modifier = Modifier
             .fillMaxSize()
     )
-     {
-         if (result1 == result2 && result2 == result3) {
+    {
 
-             Text(text =stringResource(R.string.win) , modifier = Modifier.align(Alignment.TopCenter))
-             wins+1
-         }
-         else
-         {
+        if (result1 == result2 && result2 == result3) {
+            Text(
+                text = stringResource(R.string.win),
+                modifier = Modifier.align(Alignment.TopCenter)
+            )
+        } else {
+            Text(stringResource(R.string.loss), modifier = Modifier.align(Alignment.TopCenter))
+        }
 
-             Text(stringResource(R.string.loss) , modifier = Modifier.align(Alignment.TopCenter))
-             loss++
 
-         }
-        Text(text ="loss Count: $loss", modifier = Modifier.align(Alignment.TopStart))
-        Text(text ="win Count: $wins", modifier = Modifier.align(Alignment.TopEnd))
+        Text(text = "loss Count: $loss", modifier = Modifier.align(Alignment.TopStart))
+        Text(text = "win Count: $wins", modifier = Modifier.align(Alignment.TopEnd))
 
     }
-    Box(modifier = Modifier.fillMaxSize()){
-        Image(painter = painterResource(imageResource), contentDescription = result1.toString(), modifier = Modifier
-            .align(Alignment.CenterStart)
-            .size(100.dp))
-        Image(painter = painterResource(imageResource2), contentDescription = result2.toString(), modifier = Modifier
-            .align(Alignment.Center)
-            .size(100.dp))
-        Image(painter = painterResource(imageResource3), contentDescription = result3.toString(), modifier = Modifier
-            .align(Alignment.CenterEnd)
-            .size(100.dp))
+    Box(modifier = Modifier.fillMaxSize()) {
+        Image(
+            painter = painterResource(imageResource),
+            contentDescription = result1.toString(),
+            modifier = Modifier
+                .align(Alignment.CenterStart)
+                .size(100.dp)
+        )
+        Image(
+            painter = painterResource(imageResource2),
+            contentDescription = result2.toString(),
+            modifier = Modifier
+                .align(Alignment.Center)
+                .size(100.dp)
+        )
+        Image(
+            painter = painterResource(imageResource3),
+            contentDescription = result3.toString(),
+            modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .size(100.dp)
+        )
 
         Button(onClick =
         {
-                result1 = (1..4).random()
-                result2 = (1..4).random()
-                result3 = (1..4).random()
-        }, modifier = Modifier.align(Alignment.BottomCenter))
+            result1 = (1..4).random()
+            result2 = (1..4).random()
+            result3 = (1..4).random()
+            if (result1 == result2 && result2 == result3) {
+                wins++
+            } else {
+                loss++
+            }
+        }, modifier = Modifier.align(Alignment.BottomCenter)
+        )
 
-            {
-                Text(text=stringResource(R.string.spin))
+        {
+            Text(text = stringResource(R.string.spin))
         }
 
 
