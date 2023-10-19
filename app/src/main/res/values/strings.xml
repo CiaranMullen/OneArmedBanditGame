@@ -3,6 +3,5 @@
     <string name="spin">SPIN</string>
     <string name="win">!WINNER!</string>
     <string name="loss">Bad Luck </string>
-    <string name="wincount">win count: </string>
-    <string name="losscount">loss count: $loss</string>
+    <string name="reset">reset </string>
 </resources>

@@ -3,7 +3,7 @@ package com.example.onearmedbanditgame
  Sites used for code
  https://semicolonspace.com/jetpack-compose-alignment-arrangement/
 
-
+//to be done make it save the counter for wins and losses
 
 */
 import android.os.Bundle
@@ -12,6 +12,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -61,6 +62,7 @@ fun DiceWithButtonAndImage() {
     var result1 by remember { mutableStateOf(1) }
     var result2 by remember { mutableStateOf(1) }
     var result3 by remember { mutableStateOf(1) }
+    var result4 by remember { mutableStateOf(1) }
     var wins by remember { mutableStateOf(0) }
     var loss by remember { mutableStateOf(0) }
     val imageResource = when (result1) {
@@ -80,6 +82,10 @@ fun DiceWithButtonAndImage() {
         2 -> R.drawable.dice_2
         3 -> R.drawable.dice_3
         else -> R.drawable.dice_4
+    }
+    val imageResource4 = when (result4) {
+        1 -> R.drawable.winner
+        else -> R.drawable.loss
     }
     Box(
         modifier = Modifier
@@ -121,6 +127,15 @@ fun DiceWithButtonAndImage() {
             contentDescription = result3.toString(),
             modifier = Modifier
                 .align(Alignment.CenterEnd)
+                .padding(10.dp)
+                .size(100.dp)
+        )
+        Image(
+            painter = painterResource(imageResource4),
+            contentDescription = result3.toString(),
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(40.dp)
                 .size(100.dp)
         )
 
@@ -129,10 +144,12 @@ fun DiceWithButtonAndImage() {
             result1 = (1..4).random()
             result2 = (1..4).random()
             result3 = (1..4).random()
-            if (result1 == result2 && result2 == result3) {
+            result4 = if (result1 == result2 && result2 == result3) {
                 wins++
+                1
             } else {
                 loss++
+                2
             }
         }, modifier = Modifier.align(Alignment.BottomCenter)
         )
@@ -141,7 +158,16 @@ fun DiceWithButtonAndImage() {
             Text(text = stringResource(R.string.spin))
         }
 
+        Button(onClick =
+        {
+                wins=0
+                loss=0
 
+        }, modifier = Modifier.align(Alignment.BottomEnd)
+        )
+        {
+            Text(text = stringResource(R.string.reset))
+        }
     }
 }
 
