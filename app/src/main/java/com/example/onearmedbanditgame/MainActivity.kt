@@ -3,7 +3,7 @@ package com.example.onearmedbanditgame
  Sites used for code
  https://semicolonspace.com/jetpack-compose-alignment-arrangement/
 
-//to be done make it save the counter for wins and losses
+
 
 */
 import android.os.Bundle
@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -59,12 +60,16 @@ fun OneArmedBanditApp() {
 
 @Composable
 fun DiceWithButtonAndImage() {
-    var result1 by remember { mutableStateOf(1) }
-    var result2 by remember { mutableStateOf(1) }
-    var result3 by remember { mutableStateOf(1) }
-    var result4 by remember { mutableStateOf(1) }
-    var wins by remember { mutableStateOf(0) }
-    var loss by remember { mutableStateOf(0) }
+    var result1 by rememberSaveable  { mutableStateOf(1) }
+    var result2 by rememberSaveable  { mutableStateOf(1) }
+    var result3 by rememberSaveable  { mutableStateOf(1) }
+    var result4 by rememberSaveable  { mutableStateOf(1) }
+    var wins by rememberSaveable  { mutableStateOf(0) }
+    var loss by rememberSaveable  { mutableStateOf(0) }
+    var spins by rememberSaveable  { mutableStateOf(0) }
+
+    var percentage by rememberSaveable  { mutableStateOf(0) }
+
     val imageResource = when (result1) {
         1 -> R.drawable.dice_1
         2 -> R.drawable.dice_2
@@ -105,6 +110,9 @@ fun DiceWithButtonAndImage() {
 
         Text(text = "loss Count: $loss", modifier = Modifier.align(Alignment.TopStart))
         Text(text = "win Count: $wins", modifier = Modifier.align(Alignment.TopEnd))
+        Text(text = "spin Count: $spins", modifier = Modifier.align(Alignment.BottomStart))
+
+        Text(text = "win spin ratio: $percentage%", modifier = Modifier.align(Alignment.Center).padding(0.dp,0.dp,0.dp,100.dp))
 
     }
     Box(modifier = Modifier.fillMaxSize()) {
@@ -141,6 +149,7 @@ fun DiceWithButtonAndImage() {
 
         Button(onClick =
         {
+            spins++
             result1 = (1..4).random()
             result2 = (1..4).random()
             result3 = (1..4).random()
@@ -160,6 +169,7 @@ fun DiceWithButtonAndImage() {
 
         Button(onClick =
         {
+                spins=0
                 wins=0
                 loss=0
 
