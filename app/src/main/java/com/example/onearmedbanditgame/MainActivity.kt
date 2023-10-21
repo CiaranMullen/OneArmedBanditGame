@@ -7,6 +7,7 @@ package com.example.onearmedbanditgame
 
 */
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -21,7 +22,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -33,8 +33,10 @@ import androidx.compose.ui.unit.dp
 import com.example.onearmedbanditgame.ui.theme.OneArmedBanditGameTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("tag","onCreate Start")
         setContent {
 
             OneArmedBanditGameTheme {
@@ -67,7 +69,6 @@ fun DiceWithButtonAndImage() {
     var wins by rememberSaveable  { mutableStateOf(0) }
     var loss by rememberSaveable  { mutableStateOf(0) }
     var spins by rememberSaveable  { mutableStateOf(0) }
-
     var percentage by rememberSaveable  { mutableStateOf(0) }
 
     val imageResource = when (result1) {
@@ -112,10 +113,11 @@ fun DiceWithButtonAndImage() {
         Text(text = "win Count: $wins", modifier = Modifier.align(Alignment.TopEnd))
         Text(text = "spin Count: $spins", modifier = Modifier.align(Alignment.BottomStart))
 
-        Text(text = "win spin ratio: $percentage%", modifier = Modifier.align(Alignment.Center).padding(0.dp,0.dp,0.dp,100.dp))
+        Text(text = "win spin ratio: $percentage%", modifier = Modifier.align(Alignment.Center).padding(0.dp,100.dp,0.dp, 0.dp))
 
     }
     Box(modifier = Modifier.fillMaxSize()) {
+        Log.d("tag","create imageResource")
         Image(
             painter = painterResource(imageResource),
             contentDescription = result1.toString(),
@@ -123,6 +125,7 @@ fun DiceWithButtonAndImage() {
                 .align(Alignment.CenterStart)
                 .size(100.dp)
         )
+        Log.d("tag","create imageResource2")
         Image(
             painter = painterResource(imageResource2),
             contentDescription = result2.toString(),
@@ -130,6 +133,7 @@ fun DiceWithButtonAndImage() {
                 .align(Alignment.Center)
                 .size(100.dp)
         )
+        Log.d("tag","create imageResource3")
         Image(
             painter = painterResource(imageResource3),
             contentDescription = result3.toString(),
@@ -138,6 +142,7 @@ fun DiceWithButtonAndImage() {
                 .padding(10.dp)
                 .size(100.dp)
         )
+        Log.d("tag","create imageResource4")
         Image(
             painter = painterResource(imageResource4),
             contentDescription = result3.toString(),
@@ -149,17 +154,26 @@ fun DiceWithButtonAndImage() {
 
         Button(onClick =
         {
+            Log.d("tag","spin++")
             spins++
+            Log.d("tag","result1: 1..4")
             result1 = (1..4).random()
+            Log.d("tag","result2: 1..4")
             result2 = (1..4).random()
+            Log.d("tag","result3: 1..4")
             result3 = (1..4).random()
+            Log.d("tag","result4: 1..4")
             result4 = if (result1 == result2 && result2 == result3) {
+                Log.d("tag","wins: add 1")
                 wins++
                 1
             } else {
+                Log.d("tag","loss: add 1")
                 loss++
                 2
             }
+            Log.d("tag","percentage: wins/spins *100")
+            percentage = wins/spins *100
         }, modifier = Modifier.align(Alignment.BottomCenter)
         )
 
@@ -168,10 +182,11 @@ fun DiceWithButtonAndImage() {
         }
 
         Button(onClick =
-        {
+        {Log.d("tag","set spin win loss percentage to 0")
                 spins=0
                 wins=0
                 loss=0
+                percentage=0
 
         }, modifier = Modifier.align(Alignment.BottomEnd)
         )
